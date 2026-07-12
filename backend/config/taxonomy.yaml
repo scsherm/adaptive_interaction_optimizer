@@ -1,0 +1,252 @@
+version: 1
+description: Layered basket taxonomy used for ticker intake and LLM classification.
+classification:
+  default_model: gpt-5.4-nano
+  env_model_var: OPENAI_TICKER_MODEL
+  provider: openai_responses
+baskets:
+  cybersecurity:
+    path:
+    - Technology
+    - Security Software
+    - Cybersecurity
+    description: Endpoint, network, identity, cloud, zero-trust, exposure management,
+      and application security.
+    keywords:
+    - security
+    - cybersecurity
+    - endpoint security
+    - identity
+    - zero trust
+    - firewall
+    - exposure management
+    candidates: []
+  btc_mining_ai_pivot:
+    path:
+    - Digital Assets
+    - Compute Infrastructure
+    - BTC Mining / AI Pivot
+    description: Bitcoin miners and former miners pivoting capacity toward HPC, AI
+      hosting, or data-center power assets.
+    keywords:
+    - bitcoin mining
+    - hashrate
+    - HPC
+    - AI data center
+    - power monetization
+    - hosting
+    candidates:
+    - ticker: SLNH
+      name: Soluna Holdings, Inc
+      note: SLNH missing reliable context; requires web_context (sector/industry/businessSummary)
+        to classify.
+    - ticker: KEEL
+      name: Keel Infrastructure Corp.
+      note: 'KEEL: bitcoin mining + AI/HPC data-center compute/hosting.'
+  software:
+    path:
+    - Technology
+    - Software
+    - Enterprise / Data / AI Software
+    description: Large-cap software, SaaS, data infrastructure, observability, enterprise
+      workflow, and AI application platforms.
+    keywords:
+    - software
+    - SaaS
+    - cloud software
+    - data infrastructure
+    - workflow
+    - observability
+    - AI software
+    candidates: []
+  semiconductors:
+    path:
+    - Technology
+    - Hardware
+    - Semiconductors
+    description: AI accelerators, CPUs/GPUs, memory, foundry, semiconductor equipment,
+      analog, networking, and edge chips.
+    keywords:
+    - semiconductor
+    - chips
+    - GPU
+    - foundry
+    - memory
+    - lithography
+    - semiconductor equipment
+    candidates:
+    - ticker: VSH
+      name: Vishay Intertechnology, Inc.
+      note: 'VSH: discrete semiconductor + passive components manufacturer.'
+    - ticker: TRT
+      name: Trio-Tech International
+      note: 'TRT: semiconductor test equipment/services (mapped to semiconductors
+        basket).'
+    - ticker: NVTS
+      name: Navitas Semiconductor Corp
+      note: NVTS missing reliable context; requires web_context (sector/industry/businessSummary)
+        to classify.
+    - ticker: PENG
+      name: Penguin Solutions, Inc.
+      note: PENG missing reliable context; requires web_context (sector/industry/businessSummary)
+        to classify.
+  metals:
+    path:
+    - Materials
+    - Metals & Mining
+    - Base Metals / Steel
+    description: Copper, aluminum, steel, iron ore, base metals, and diversified miners.
+    keywords:
+    - copper
+    - aluminum
+    - steel
+    - iron ore
+    - base metals
+    - mining
+    candidates: []
+  fertilizer:
+    path:
+    - Materials
+    - Agricultural Inputs
+    - Fertilizer / Crop Nutrients
+    description: Fertilizer, crop nutrients, nitrogen, phosphate, potash, and adjacent
+      agricultural input producers.
+    keywords:
+    - fertilizer
+    - crop nutrients
+    - nitrogen
+    - potash
+    - phosphate
+    - ammonia
+    - ag inputs
+    candidates: []
+  photonics:
+    path:
+    - Technology
+    - Hardware
+    - Photonics / Optical Infrastructure
+    description: Optical networking, lasers, optical components, photonic process
+      tools, and compound semiconductor substrates.
+    keywords:
+    - photonics
+    - optical networking
+    - lasers
+    - transceivers
+    - fiber optics
+    - compound semiconductor
+    candidates:
+    - ticker: CBRS
+      name: Cerebras Systems Inc.
+      note: CBRS missing reliable context; requires web_context (sector/industry/businessSummary)
+        to classify.
+  quantum:
+    path:
+    - Technology
+    - Advanced Compute
+    - Quantum Computing / Quantum Security
+    description: Pure-play and high-beta quantum computing, quantum sensing, and post-quantum
+      security companies.
+    keywords:
+    - quantum computing
+    - qubit
+    - trapped ion
+    - neutral atom
+    - annealing
+    - post-quantum security
+    candidates: []
+  crypto:
+    path:
+    - Digital Assets
+    - Cryptoassets
+    - Liquid Crypto Pairs
+    description: Liquid cryptoassets tracked as Yahoo USD pairs.
+    keywords:
+    - cryptoasset
+    - cryptocurrency
+    - blockchain
+    - token
+    - USD pair
+    candidates: []
+  oil:
+    path:
+    - Energy
+    - Oil & Gas
+    - Integrated / E&P / Services / Refining
+    description: Integrated oil, E&P, oilfield services, refining, and energy infrastructure
+      tied primarily to crude.
+    keywords:
+    - oil
+    - crude
+    - E&P
+    - refining
+    - oilfield services
+    - integrated oil
+    candidates: []
+  oil_tankers:
+    path:
+    - Energy
+    - Shipping
+    - Oil Tankers
+    description: Crude and product tanker owners/operators with listed U.S. or ADR
+      tickers where practical.
+    keywords:
+    - tanker
+    - crude tanker
+    - product tanker
+    - shipping
+    - marine transport
+    candidates: []
+  rare_earth_minerals:
+    path:
+    - Materials
+    - Critical Minerals
+    - Rare Earth / Strategic Minerals
+    description: Rare earth producers/developers and strategic/critical minerals companies
+      with related exposure.
+    keywords:
+    - rare earth
+    - critical minerals
+    - strategic metals
+    - antimony
+    - lithium
+    - mineral development
+    candidates: []
+  construction:
+    path:
+    - Industrials
+    - Construction & Infrastructure
+    - Builders / Equipment / Aggregates
+    description: Homebuilders, construction equipment, infrastructure construction,
+      aggregates, and building materials.
+    keywords:
+    - homebuilding
+    - construction
+    - equipment rental
+    - aggregates
+    - building materials
+    - infrastructure
+    candidates: []
+  power_grid:
+    path:
+    - Energy
+    - Power Infrastructure
+    - Power / Grid
+    description: Power generation, electrical equipment, grid construction, utilities,
+      nuclear/power producers, and grid storage.
+    keywords:
+    - power
+    - grid
+    - electrical equipment
+    - utility
+    - nuclear
+    - generation
+    - transmission
+    candidates:
+    - ticker: TE
+      name: T1 Energy Inc.
+      note: TE could not be classified from provided context; requires ticker disambiguation
+        (exact exchange/company).
+    - ticker: OKLO
+      name: Oklo Inc.
+      note: OKLO missing reliable context in payload; requires web_context to classify
+        (e.g., nuclear vs other exposure).

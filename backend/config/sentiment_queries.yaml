@@ -1,0 +1,1096 @@
+settings:
+  provider: gdelt_doc
+  default_days: 90
+  max_records_per_query: 75
+  request_pause_seconds: 6
+  language_filter: sourcelang:eng
+  ambiguous_tickers:
+    - S
+    - NOW
+    - TEN
+    - AA
+    - FN
+    - ARM
+    - NAT
+    - MP
+    - PWR
+    - CRM
+    - NET
+    - CAT
+    - COP
+    - HAL
+    - RIO
+    - BHP
+    - CF
+    - MOS
+    - ICL
+    - SQM
+    - UAN
+    - SMG
+    - LINK-USD
+  valid_query_types:
+    - investor
+    - demand_tailwind
+    - risk
+    - company_specific
+  global_exclude:
+    - sports
+    - movie
+    - music
+    - celebrity
+
+baskets:
+  - id: cybersecurity
+    basket_queries:
+      - type: investor
+        term: cybersecurity stocks
+      - type: demand_tailwind
+        term: ransomware data breach enterprise security
+      - type: risk
+        term: cybersecurity spending slowdown
+    ticker_queries:
+      - ticker: CRWD
+        company_name: CrowdStrike
+        aliases:
+          - CrowdStrike
+        queries:
+          - type: company_specific
+            term: CrowdStrike cybersecurity
+      - ticker: PANW
+        company_name: Palo Alto Networks
+        aliases:
+          - Palo Alto Networks
+        queries:
+          - type: company_specific
+            term: Palo Alto Networks cybersecurity
+      - ticker: FTNT
+        company_name: Fortinet
+        aliases:
+          - Fortinet
+        queries:
+          - type: company_specific
+            term: Fortinet network security
+      - ticker: ZS
+        company_name: Zscaler
+        aliases:
+          - Zscaler
+        queries:
+          - type: company_specific
+            term: Zscaler zero trust security
+      - ticker: OKTA
+        company_name: Okta
+        aliases:
+          - Okta
+        queries:
+          - type: company_specific
+            term: Okta identity security
+      - ticker: NET
+        company_name: Cloudflare
+        aliases:
+          - Cloudflare
+        queries:
+          - type: company_specific
+            term: Cloudflare application security
+      - ticker: S
+        company_name: SentinelOne
+        aliases:
+          - SentinelOne
+        queries:
+          - type: company_specific
+            term: SentinelOne endpoint security
+      - ticker: TENB
+        company_name: Tenable
+        aliases:
+          - Tenable
+        queries:
+          - type: company_specific
+            term: Tenable exposure management cybersecurity
+      - ticker: RPD
+        company_name: Rapid7
+        aliases:
+          - Rapid7
+        queries:
+          - type: company_specific
+            term: Rapid7 vulnerability security analytics
+  - id: btc_mining_ai_pivot
+    basket_queries:
+      - type: investor
+        term: bitcoin mining stocks AI data centers
+      - type: demand_tailwind
+        term: bitcoin miners high performance computing AI hosting
+      - type: risk
+        term: bitcoin mining power costs hashprice
+    ticker_queries:
+      - ticker: IREN
+        company_name: IREN
+        aliases:
+          - IREN
+        queries:
+          - type: company_specific
+            term: IREN bitcoin mining AI data center
+      - ticker: APLD
+        company_name: Applied Digital
+        aliases:
+          - Applied Digital
+        queries:
+          - type: company_specific
+            term: Applied Digital AI data centers
+      - ticker: CORZ
+        company_name: Core Scientific
+        aliases:
+          - Core Scientific
+        queries:
+          - type: company_specific
+            term: Core Scientific bitcoin mining HPC
+      - ticker: CIFR
+        company_name: Cipher Mining
+        aliases:
+          - Cipher Mining
+        queries:
+          - type: company_specific
+            term: Cipher Mining bitcoin mining data center
+      - ticker: CLSK
+        company_name: CleanSpark
+        aliases:
+          - CleanSpark
+        queries:
+          - type: company_specific
+            term: CleanSpark bitcoin mining
+      - ticker: WULF
+        company_name: TeraWulf
+        aliases:
+          - TeraWulf
+        queries:
+          - type: company_specific
+            term: TeraWulf bitcoin mining AI infrastructure
+      - ticker: MARA
+        company_name: MARA Holdings
+        aliases:
+          - MARA Holdings
+        queries:
+          - type: company_specific
+            term: MARA Holdings bitcoin mining
+      - ticker: RIOT
+        company_name: Riot Platforms
+        aliases:
+          - Riot Platforms
+        queries:
+          - type: company_specific
+            term: Riot Platforms bitcoin mining
+      - ticker: BITF
+        company_name: Bitfarms
+        aliases:
+          - Bitfarms
+        queries:
+          - type: company_specific
+            term: Bitfarms bitcoin mining
+      - ticker: HIVE
+        company_name: HIVE Digital
+        aliases:
+          - HIVE Digital
+        queries:
+          - type: company_specific
+            term: HIVE Digital bitcoin mining GPU cloud
+      - ticker: HUT
+        company_name: Hut 8
+        aliases:
+          - Hut 8
+        queries:
+          - type: company_specific
+            term: Hut 8 bitcoin mining HPC
+      - ticker: SLNH
+        company_name: Soluna Holdings
+        aliases:
+          - Soluna Holdings
+        queries:
+          - type: company_specific
+            term: Soluna Holdings renewable data center bitcoin mining
+      - ticker: KEEL
+        company_name: Keel Infrastructure
+        aliases:
+          - Keel Infrastructure
+        queries:
+          - type: company_specific
+            term: Keel Infrastructure AI data center bitcoin mining
+  - id: software
+    basket_queries:
+      - type: investor
+        term: enterprise software stocks
+      - type: demand_tailwind
+        term: AI software enterprise cloud demand
+      - type: risk
+        term: software spending slowdown SaaS budget cuts
+    ticker_queries:
+      - ticker: MSFT
+        company_name: Microsoft
+        aliases:
+          - Microsoft
+        queries:
+          - type: company_specific
+            term: Microsoft cloud AI software
+      - ticker: ORCL
+        company_name: Oracle
+        aliases:
+          - Oracle
+        queries:
+          - type: company_specific
+            term: Oracle cloud database software
+      - ticker: CRM
+        company_name: Salesforce
+        aliases:
+          - Salesforce
+        queries:
+          - type: company_specific
+            term: Salesforce enterprise software
+      - ticker: NOW
+        company_name: ServiceNow
+        aliases:
+          - ServiceNow
+        queries:
+          - type: company_specific
+            term: ServiceNow enterprise workflow software
+      - ticker: ADBE
+        company_name: Adobe
+        aliases:
+          - Adobe
+        queries:
+          - type: company_specific
+            term: Adobe software AI
+      - ticker: SNOW
+        company_name: Snowflake
+        aliases:
+          - Snowflake
+        queries:
+          - type: company_specific
+            term: Snowflake data cloud software
+      - ticker: DDOG
+        company_name: Datadog
+        aliases:
+          - Datadog
+        queries:
+          - type: company_specific
+            term: Datadog observability software
+      - ticker: PLTR
+        company_name: Palantir
+        aliases:
+          - Palantir
+        queries:
+          - type: company_specific
+            term: Palantir AI analytics software
+      - ticker: MDB
+        company_name: MongoDB
+        aliases:
+          - MongoDB
+        queries:
+          - type: company_specific
+            term: MongoDB database software
+      - ticker: ESTC
+        company_name: Elastic
+        aliases:
+          - Elastic
+        queries:
+          - type: company_specific
+            term: Elastic search observability software
+      - ticker: TEAM
+        company_name: Atlassian
+        aliases:
+          - Atlassian
+        queries:
+          - type: company_specific
+            term: Atlassian collaboration software
+  - id: semiconductors
+    basket_queries:
+      - type: investor
+        term: semiconductor stocks AI chips
+      - type: demand_tailwind
+        term: AI accelerator demand data center chips
+      - type: risk
+        term: semiconductor export controls inventory slowdown
+    ticker_queries:
+      - ticker: NVDA
+        company_name: Nvidia
+        aliases:
+          - Nvidia
+        queries:
+          - type: company_specific
+            term: Nvidia AI chips data center
+      - ticker: AMD
+        company_name: AMD
+        aliases:
+          - Advanced Micro Devices
+          - AMD
+        queries:
+          - type: company_specific
+            term: AMD AI chips data center
+      - ticker: AVGO
+        company_name: Broadcom
+        aliases:
+          - Broadcom
+        queries:
+          - type: company_specific
+            term: Broadcom AI networking semiconductor
+      - ticker: TSM
+        company_name: TSMC
+        aliases:
+          - TSMC
+          - Taiwan Semiconductor
+        queries:
+          - type: company_specific
+            term: TSMC semiconductor foundry
+      - ticker: ASML
+        company_name: ASML
+        aliases:
+          - ASML
+        queries:
+          - type: company_specific
+            term: ASML lithography semiconductor
+      - ticker: MU
+        company_name: Micron
+        aliases:
+          - Micron
+        queries:
+          - type: company_specific
+            term: Micron memory semiconductor
+      - ticker: MRVL
+        company_name: Marvell
+        aliases:
+          - Marvell
+        queries:
+          - type: company_specific
+            term: Marvell data center semiconductor
+      - ticker: QCOM
+        company_name: Qualcomm
+        aliases:
+          - Qualcomm
+        queries:
+          - type: company_specific
+            term: Qualcomm semiconductor AI edge
+      - ticker: ARM
+        company_name: Arm Holdings
+        aliases:
+          - Arm Holdings
+        queries:
+          - type: company_specific
+            term: Arm Holdings semiconductor CPU
+      - ticker: INTC
+        company_name: Intel
+        aliases:
+          - Intel
+        queries:
+          - type: company_specific
+            term: Intel semiconductor foundry CPU
+      - ticker: AMAT
+        company_name: Applied Materials
+        aliases:
+          - Applied Materials
+        queries:
+          - type: company_specific
+            term: Applied Materials semiconductor equipment
+      - ticker: VSH
+        company_name: Vishay Intertechnology
+        aliases:
+          - Vishay Intertechnology
+        queries:
+          - type: company_specific
+            term: Vishay Intertechnology semiconductors passive components
+      - ticker: TRT
+        company_name: Trio-Tech International
+        aliases:
+          - Trio-Tech International
+        queries:
+          - type: company_specific
+            term: Trio-Tech International semiconductor test equipment
+      - ticker: NVTS
+        company_name: Navitas Semiconductor
+        aliases:
+          - Navitas Semiconductor
+        queries:
+          - type: company_specific
+            term: Navitas Semiconductor gallium nitride silicon carbide chips
+      - ticker: PENG
+        company_name: Penguin Solutions
+        aliases:
+          - Penguin Solutions
+        queries:
+          - type: company_specific
+            term: Penguin Solutions AI infrastructure HPC memory
+  - id: metals
+    basket_queries:
+      - type: investor
+        term: metals mining stocks copper aluminum steel
+      - type: demand_tailwind
+        term: copper demand electrification infrastructure
+      - type: risk
+        term: metals prices China demand slowdown
+    ticker_queries:
+      - ticker: FCX
+        company_name: Freeport-McMoRan
+        aliases:
+          - Freeport-McMoRan
+        queries:
+          - type: company_specific
+            term: Freeport-McMoRan copper mining
+      - ticker: SCCO
+        company_name: Southern Copper
+        aliases:
+          - Southern Copper
+        queries:
+          - type: company_specific
+            term: Southern Copper mining
+      - ticker: AA
+        company_name: Alcoa
+        aliases:
+          - Alcoa
+        queries:
+          - type: company_specific
+            term: Alcoa aluminum
+      - ticker: TECK
+        company_name: Teck Resources
+        aliases:
+          - Teck Resources
+        queries:
+          - type: company_specific
+            term: Teck Resources base metals
+      - ticker: RIO
+        company_name: Rio Tinto
+        aliases:
+          - Rio Tinto
+        queries:
+          - type: company_specific
+            term: Rio Tinto mining
+      - ticker: BHP
+        company_name: BHP
+        aliases:
+          - BHP
+        queries:
+          - type: company_specific
+            term: BHP mining copper iron ore
+      - ticker: CLF
+        company_name: Cleveland-Cliffs
+        aliases:
+          - Cleveland-Cliffs
+        queries:
+          - type: company_specific
+            term: Cleveland-Cliffs steel
+      - ticker: NUE
+        company_name: Nucor
+        aliases:
+          - Nucor
+        queries:
+          - type: company_specific
+            term: Nucor steel
+  - id: fertilizer
+    basket_queries:
+      - type: investor
+        term: fertilizer stocks crop nutrients
+      - type: demand_tailwind
+        term: fertilizer demand crop prices nitrogen potash phosphate
+      - type: risk
+        term: fertilizer prices natural gas costs farmer demand
+    ticker_queries:
+      - ticker: NTR
+        company_name: Nutrien
+        aliases:
+          - Nutrien
+        queries:
+          - type: company_specific
+            term: Nutrien fertilizer potash nitrogen
+      - ticker: MOS
+        company_name: Mosaic
+        aliases:
+          - Mosaic
+          - The Mosaic Company
+        queries:
+          - type: company_specific
+            term: Mosaic phosphate potash fertilizer
+      - ticker: CF
+        company_name: CF Industries
+        aliases:
+          - CF Industries
+        queries:
+          - type: company_specific
+            term: CF Industries nitrogen fertilizer
+      - ticker: ICL
+        company_name: ICL Group
+        aliases:
+          - ICL Group
+        queries:
+          - type: company_specific
+            term: ICL Group potash specialty fertilizers
+      - ticker: SQM
+        company_name: SQM
+        aliases:
+          - SQM
+          - Sociedad Quimica y Minera
+        queries:
+          - type: company_specific
+            term: SQM specialty plant nutrition potash
+      - ticker: UAN
+        company_name: CVR Partners
+        aliases:
+          - CVR Partners
+        queries:
+          - type: company_specific
+            term: CVR Partners nitrogen fertilizer
+      - ticker: LXU
+        company_name: LSB Industries
+        aliases:
+          - LSB Industries
+        queries:
+          - type: company_specific
+            term: LSB Industries ammonia nitrogen products
+      - ticker: SMG
+        company_name: Scotts Miracle-Gro
+        aliases:
+          - Scotts Miracle-Gro
+          - ScottsMiracle-Gro
+        queries:
+          - type: company_specific
+            term: Scotts Miracle-Gro lawn garden fertilizer
+  - id: photonics
+    basket_queries:
+      - type: investor
+        term: photonics optical networking stocks
+      - type: demand_tailwind
+        term: data center optical transceiver demand
+      - type: risk
+        term: optical components inventory slowdown
+    ticker_queries:
+      - ticker: COHR
+        company_name: Coherent
+        aliases:
+          - Coherent
+        queries:
+          - type: company_specific
+            term: Coherent optical components lasers
+      - ticker: LITE
+        company_name: Lumentum
+        aliases:
+          - Lumentum
+        queries:
+          - type: company_specific
+            term: Lumentum optical components
+      - ticker: FN
+        company_name: Fabrinet
+        aliases:
+          - Fabrinet
+        queries:
+          - type: company_specific
+            term: Fabrinet optical manufacturing
+      - ticker: AAOI
+        company_name: Applied Optoelectronics
+        aliases:
+          - Applied Optoelectronics
+        queries:
+          - type: company_specific
+            term: Applied Optoelectronics data center optical
+      - ticker: IPGP
+        company_name: IPG Photonics
+        aliases:
+          - IPG Photonics
+        queries:
+          - type: company_specific
+            term: IPG Photonics fiber lasers
+      - ticker: MKSI
+        company_name: MKS Instruments
+        aliases:
+          - MKS Instruments
+        queries:
+          - type: company_specific
+            term: MKS Instruments photonics semiconductor equipment
+      - ticker: HLIT
+        company_name: Harmonic
+        aliases:
+          - Harmonic
+        queries:
+          - type: company_specific
+            term: Harmonic optical video networking
+      - ticker: AXTI
+        company_name: AXT
+        aliases:
+          - AXT
+        queries:
+          - type: company_specific
+            term: AXT compound semiconductor substrates
+      - ticker: CBRS
+        company_name: Cerebras Systems
+        aliases:
+          - Cerebras Systems
+        queries:
+          - type: company_specific
+            term: Cerebras Systems AI chips wafer scale accelerator
+  - id: quantum
+    basket_queries:
+      - type: investor
+        term: quantum computing stocks
+      - type: demand_tailwind
+        term: quantum computing commercialization government funding
+      - type: risk
+        term: quantum computing stocks dilution cash burn
+    ticker_queries:
+      - ticker: IONQ
+        company_name: IonQ
+        aliases:
+          - IonQ
+        queries:
+          - type: company_specific
+            term: IonQ quantum computing
+      - ticker: RGTI
+        company_name: Rigetti Computing
+        aliases:
+          - Rigetti Computing
+        queries:
+          - type: company_specific
+            term: Rigetti Computing quantum
+      - ticker: QBTS
+        company_name: D-Wave Quantum
+        aliases:
+          - D-Wave Quantum
+        queries:
+          - type: company_specific
+            term: D-Wave Quantum computing
+      - ticker: QUBT
+        company_name: Quantum Computing Inc.
+        aliases:
+          - Quantum Computing Inc.
+          - QCi
+        queries:
+          - type: company_specific
+            term: Quantum Computing Inc photonics quantum
+      - ticker: INFQ
+        company_name: Infleqtion
+        aliases:
+          - Infleqtion
+        queries:
+          - type: company_specific
+            term: Infleqtion neutral atom quantum computing
+      - ticker: QNC
+        company_name: Quantum eMotion
+        aliases:
+          - Quantum eMotion
+        queries:
+          - type: company_specific
+            term: Quantum eMotion quantum cybersecurity
+      - ticker: ARQQ
+        company_name: Arqit Quantum
+        aliases:
+          - Arqit Quantum
+        queries:
+          - type: company_specific
+            term: Arqit Quantum quantum-safe encryption
+      - ticker: LAES
+        company_name: SEALSQ
+        aliases:
+          - SEALSQ
+        queries:
+          - type: company_specific
+            term: SEALSQ post-quantum security semiconductors
+  - id: crypto
+    basket_queries:
+      - type: investor
+        term: cryptocurrency market Bitcoin Ethereum
+      - type: demand_tailwind
+        term: crypto ETF institutional adoption blockchain
+      - type: risk
+        term: crypto regulation hack exchange risk
+    ticker_queries:
+      - ticker: BTC-USD
+        company_name: Bitcoin
+        aliases:
+          - Bitcoin
+        queries:
+          - type: company_specific
+            term: Bitcoin cryptocurrency market
+      - ticker: ETH-USD
+        company_name: Ethereum
+        aliases:
+          - Ethereum
+        queries:
+          - type: company_specific
+            term: Ethereum cryptocurrency blockchain
+      - ticker: SOL-USD
+        company_name: Solana
+        aliases:
+          - Solana
+        queries:
+          - type: company_specific
+            term: Solana cryptocurrency blockchain
+      - ticker: BNB-USD
+        company_name: BNB
+        aliases:
+          - BNB Chain
+        queries:
+          - type: company_specific
+            term: BNB cryptocurrency blockchain
+      - ticker: XRP-USD
+        company_name: XRP
+        aliases:
+          - XRP
+          - Ripple
+        queries:
+          - type: company_specific
+            term: XRP cryptocurrency Ripple
+      - ticker: ADA-USD
+        company_name: Cardano
+        aliases:
+          - Cardano
+        queries:
+          - type: company_specific
+            term: Cardano cryptocurrency blockchain
+      - ticker: DOGE-USD
+        company_name: Dogecoin
+        aliases:
+          - Dogecoin
+        queries:
+          - type: company_specific
+            term: Dogecoin cryptocurrency
+      - ticker: LINK-USD
+        company_name: Chainlink
+        aliases:
+          - Chainlink
+        queries:
+          - type: company_specific
+            term: Chainlink cryptocurrency oracle network
+  - id: oil
+    basket_queries:
+      - type: investor
+        term: oil stocks energy sector
+      - type: demand_tailwind
+        term: crude oil demand supply OPEC
+      - type: risk
+        term: oil price decline demand slowdown
+    ticker_queries:
+      - ticker: XOM
+        company_name: Exxon Mobil
+        aliases:
+          - Exxon Mobil
+          - ExxonMobil
+        queries:
+          - type: company_specific
+            term: Exxon Mobil oil earnings
+      - ticker: CVX
+        company_name: Chevron
+        aliases:
+          - Chevron
+        queries:
+          - type: company_specific
+            term: Chevron oil earnings
+      - ticker: COP
+        company_name: ConocoPhillips
+        aliases:
+          - ConocoPhillips
+        queries:
+          - type: company_specific
+            term: ConocoPhillips oil production
+      - ticker: EOG
+        company_name: EOG Resources
+        aliases:
+          - EOG Resources
+        queries:
+          - type: company_specific
+            term: EOG Resources oil production
+      - ticker: OXY
+        company_name: Occidental Petroleum
+        aliases:
+          - Occidental Petroleum
+        queries:
+          - type: company_specific
+            term: Occidental Petroleum oil
+      - ticker: SLB
+        company_name: SLB
+        aliases:
+          - SLB
+          - Schlumberger
+        queries:
+          - type: company_specific
+            term: SLB oilfield services
+      - ticker: HAL
+        company_name: Halliburton
+        aliases:
+          - Halliburton
+        queries:
+          - type: company_specific
+            term: Halliburton oilfield services
+      - ticker: VLO
+        company_name: Valero
+        aliases:
+          - Valero
+        queries:
+          - type: company_specific
+            term: Valero refining oil
+  - id: oil_tankers
+    basket_queries:
+      - type: investor
+        term: oil tanker shipping stocks
+      - type: demand_tailwind
+        term: crude tanker rates shipping demand
+      - type: risk
+        term: tanker rates decline shipping oversupply
+    ticker_queries:
+      - ticker: FRO
+        company_name: Frontline
+        aliases:
+          - Frontline
+        queries:
+          - type: company_specific
+            term: Frontline crude tanker shipping
+      - ticker: DHT
+        company_name: DHT Holdings
+        aliases:
+          - DHT Holdings
+        queries:
+          - type: company_specific
+            term: DHT Holdings crude tankers
+      - ticker: STNG
+        company_name: Scorpio Tankers
+        aliases:
+          - Scorpio Tankers
+        queries:
+          - type: company_specific
+            term: Scorpio Tankers product tankers
+      - ticker: TNK
+        company_name: Teekay Tankers
+        aliases:
+          - Teekay Tankers
+        queries:
+          - type: company_specific
+            term: Teekay Tankers shipping
+      - ticker: INSW
+        company_name: International Seaways
+        aliases:
+          - International Seaways
+        queries:
+          - type: company_specific
+            term: International Seaways tankers
+      - ticker: NAT
+        company_name: Nordic American Tankers
+        aliases:
+          - Nordic American Tankers
+        queries:
+          - type: company_specific
+            term: Nordic American Tankers crude tanker
+      - ticker: CMBT
+        company_name: CMB.TECH
+        aliases:
+          - CMB.TECH
+          - CMB TECH
+        queries:
+          - type: company_specific
+            term: CMB.TECH tanker shipping
+      - ticker: TEN
+        company_name: Tsakos Energy Navigation
+        aliases:
+          - Tsakos Energy Navigation
+        queries:
+          - type: company_specific
+            term: Tsakos Energy Navigation tankers
+  - id: rare_earth_minerals
+    basket_queries:
+      - type: investor
+        term: rare earth minerals stocks
+      - type: demand_tailwind
+        term: critical minerals supply chain rare earth demand
+      - type: risk
+        term: rare earth price decline China export controls
+    ticker_queries:
+      - ticker: MP
+        company_name: MP Materials
+        aliases:
+          - MP Materials
+        queries:
+          - type: company_specific
+            term: MP Materials rare earth
+      - ticker: UUUU
+        company_name: Energy Fuels
+        aliases:
+          - Energy Fuels
+        queries:
+          - type: company_specific
+            term: Energy Fuels rare earth uranium
+      - ticker: UAMY
+        company_name: United States Antimony
+        aliases:
+          - United States Antimony
+        queries:
+          - type: company_specific
+            term: United States Antimony critical minerals
+      - ticker: TMRC
+        company_name: Texas Mineral Resources
+        aliases:
+          - Texas Mineral Resources
+        queries:
+          - type: company_specific
+            term: Texas Mineral Resources rare earth
+      - ticker: LYSDY
+        company_name: Lynas Rare Earths
+        aliases:
+          - Lynas Rare Earths
+        queries:
+          - type: company_specific
+            term: Lynas Rare Earths
+      - ticker: AREC
+        company_name: American Resources
+        aliases:
+          - American Resources
+        queries:
+          - type: company_specific
+            term: American Resources critical minerals
+      - ticker: CRML
+        company_name: Critical Metals
+        aliases:
+          - Critical Metals
+        queries:
+          - type: company_specific
+            term: Critical Metals lithium critical minerals
+      - ticker: REMX
+        company_name: VanEck Rare Earth Strategic Metals ETF
+        aliases:
+          - VanEck Rare Earth Strategic Metals ETF
+        queries:
+          - type: company_specific
+            term: VanEck Rare Earth Strategic Metals ETF
+  - id: construction
+    basket_queries:
+      - type: investor
+        term: construction stocks homebuilders infrastructure
+      - type: demand_tailwind
+        term: housing demand infrastructure construction spending
+      - type: risk
+        term: mortgage rates construction slowdown
+    ticker_queries:
+      - ticker: DHI
+        company_name: D.R. Horton
+        aliases:
+          - D.R. Horton
+          - DR Horton
+        queries:
+          - type: company_specific
+            term: D.R. Horton homebuilder
+      - ticker: LEN
+        company_name: Lennar
+        aliases:
+          - Lennar
+        queries:
+          - type: company_specific
+            term: Lennar homebuilder
+      - ticker: PHM
+        company_name: PulteGroup
+        aliases:
+          - PulteGroup
+        queries:
+          - type: company_specific
+            term: PulteGroup homebuilder
+      - ticker: CAT
+        company_name: Caterpillar
+        aliases:
+          - Caterpillar
+        queries:
+          - type: company_specific
+            term: Caterpillar construction equipment
+      - ticker: URI
+        company_name: United Rentals
+        aliases:
+          - United Rentals
+        queries:
+          - type: company_specific
+            term: United Rentals equipment rental
+      - ticker: VMC
+        company_name: Vulcan Materials
+        aliases:
+          - Vulcan Materials
+        queries:
+          - type: company_specific
+            term: Vulcan Materials aggregates
+      - ticker: MLM
+        company_name: Martin Marietta Materials
+        aliases:
+          - Martin Marietta Materials
+        queries:
+          - type: company_specific
+            term: Martin Marietta Materials aggregates
+      - ticker: PWR
+        company_name: Quanta Services
+        aliases:
+          - Quanta Services
+        queries:
+          - type: company_specific
+            term: Quanta Services infrastructure construction
+  - id: power_grid
+    basket_queries:
+      - type: investor
+        term: power grid stocks electricity demand
+      - type: demand_tailwind
+        term: AI data center power demand grid investment
+      - type: risk
+        term: utility regulation power grid bottleneck
+    ticker_queries:
+      - ticker: GEV
+        company_name: GE Vernova
+        aliases:
+          - GE Vernova
+        queries:
+          - type: company_specific
+            term: GE Vernova power grid
+      - ticker: ETN
+        company_name: Eaton
+        aliases:
+          - Eaton
+        queries:
+          - type: company_specific
+            term: Eaton electrical equipment grid
+      - ticker: HUBB
+        company_name: Hubbell
+        aliases:
+          - Hubbell
+        queries:
+          - type: company_specific
+            term: Hubbell electrical grid
+      - ticker: PWR
+        company_name: Quanta Services
+        aliases:
+          - Quanta Services
+        queries:
+          - type: company_specific
+            term: Quanta Services grid construction
+      - ticker: VST
+        company_name: Vistra
+        aliases:
+          - Vistra
+        queries:
+          - type: company_specific
+            term: Vistra power generation
+      - ticker: CEG
+        company_name: Constellation Energy
+        aliases:
+          - Constellation Energy
+        queries:
+          - type: company_specific
+            term: Constellation Energy nuclear power
+      - ticker: NEE
+        company_name: NextEra Energy
+        aliases:
+          - NextEra Energy
+        queries:
+          - type: company_specific
+            term: NextEra Energy utility renewables
+      - ticker: NRG
+        company_name: NRG Energy
+        aliases:
+          - NRG Energy
+        queries:
+          - type: company_specific
+            term: NRG Energy power generation
+      - ticker: TE
+        company_name: T1 Energy
+        aliases:
+          - T1 Energy
+        queries:
+          - type: company_specific
+            term: T1 Energy solar modules electrical equipment
+      - ticker: OKLO
+        company_name: Oklo
+        aliases:
+          - Oklo
+        queries:
+          - type: company_specific
+            term: Oklo advanced nuclear fission power

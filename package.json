@@ -1,0 +1,16 @@
+{
+  "name": "adaptive_interaction_optimizer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Interaction-focused system demonstrated through a market-basket research workstation.",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "setup": "python3 -m venv backend/.venv && backend/.venv/bin/python -m pip install -r backend/requirements.txt",
+    "dev": "PYTHONDONTWRITEBYTECODE=1 python3 backend/workbench_server.py 3000",
+    "check": "python3 scripts/check.py && node --check public/workstation-enhancements.js",
+    "start": "PYTHONDONTWRITEBYTECODE=1 python3 backend/workbench_server.py 3000",
+    "test": "npm run check"
+  }
+}
