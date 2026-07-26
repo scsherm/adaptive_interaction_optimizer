@@ -1,0 +1,1453 @@
+version: 1
+description: 'Canonical basket universe: identity, taxonomy, intake keywords, holdings, and the eligible
+  candidate set. Single source of truth -- every other module derives from this file.'
+classification:
+  default_model: gpt-5.4-nano
+  env_model_var: OPENAI_TICKER_MODEL
+  provider: openai_responses
+methodology:
+  start_date: '2026-01-01'
+  end_date: '2026-07-24'
+  expected_constituents_per_basket: 8
+  source: Yahoo Finance chart API
+  weighting: Equal-weighted basket constituents
+  price_field: Adjusted close when supplied, otherwise close
+  data_status: July 24, 2026 is the latest completed U.S. equity session as of July 25, 2026. The pipeline
+    auto-updates this date before rebuilds.
+benchmarks:
+  - ticker: SPY
+    name: SPDR S&P 500 ETF
+    note: market benchmark
+  - ticker: QQQ
+    name: Invesco QQQ Trust
+    note: growth benchmark
+  - ticker: BTC-USD
+    name: Bitcoin
+    note: crypto benchmark
+symbol_decisions:
+  - CYBR was acquired by Palo Alto Networks and delisted before the analysis window; NET is used as a
+    liquid cybersecurity replacement.
+  - TNP is represented by TEN, the current NYSE ticker for Tsakos Energy Navigation.
+  - EURN is represented by CMBT after Euronav changed to CMB.TECH.
+  - INFQ represents Infleqtion common shares after its NYSE listing; INFQ.WS warrants are excluded.
+baskets:
+  - id: cybersecurity
+    label: Cybersecurity
+    short: Cyber
+    color: '#6bb7ff'
+    accent: oklch(74% 0.14 245)
+    path:
+      - Technology
+      - Security Software
+      - Cybersecurity
+    description: Endpoint, network, identity, cloud, zero-trust, exposure management, and application
+      security.
+    keywords:
+      - security
+      - cyber
+      - endpoint
+      - identity
+      - zero trust
+      - firewall
+      - exposure
+      - cloudflare
+      - cybersecurity
+      - endpoint security
+      - exposure management
+    intake:
+      priority: 7
+      confidence: 0.74
+      keywords:
+        - cybersecurity
+        - endpoint security
+        - zero trust
+        - identity security
+        - firewall
+    holdings:
+      - ticker: CRWD
+        name: CrowdStrike
+        note: endpoint / cloud security
+      - ticker: PANW
+        name: Palo Alto Networks
+        note: platform security
+      - ticker: FTNT
+        name: Fortinet
+        note: network security
+      - ticker: ZS
+        name: Zscaler
+        note: zero-trust / SSE
+      - ticker: OKTA
+        name: Okta
+        note: identity
+      - ticker: NET
+        name: Cloudflare
+        note: edge / application security
+      - ticker: S
+        name: SentinelOne
+        note: endpoint security
+      - ticker: TENB
+        name: Tenable
+        note: exposure management
+      - ticker: RPD
+        name: Rapid7
+        note: vulnerability / security analytics
+    candidates:
+      - ticker: CRWD
+        name: CrowdStrike
+        note: endpoint / cloud security
+      - ticker: PANW
+        name: Palo Alto Networks
+        note: platform security
+      - ticker: FTNT
+        name: Fortinet
+        note: network security
+      - ticker: ZS
+        name: Zscaler
+        note: zero-trust / SSE
+      - ticker: OKTA
+        name: Okta
+        note: identity security
+      - ticker: NET
+        name: Cloudflare
+        note: edge / application security
+      - ticker: S
+        name: SentinelOne
+        note: endpoint security
+      - ticker: TENB
+        name: Tenable
+        note: exposure management
+      - ticker: CHKP
+        name: Check Point Software
+        note: network security
+      - ticker: QLYS
+        name: Qualys
+        note: vulnerability management
+      - ticker: VRNS
+        name: Varonis
+        note: data security
+      - ticker: RPD
+        name: Rapid7
+        note: vulnerability / security analytics
+      - ticker: RDWR
+        name: Radware
+        note: application delivery / DDoS security
+      - ticker: GEN
+        name: Gen Digital
+        note: consumer identity / security
+  - id: btc_mining_ai_pivot
+    label: BTC mining / AI pivot
+    short: BTC miners
+    color: '#f18f6d'
+    accent: oklch(74% 0.15 38)
+    path:
+      - Digital Assets
+      - Compute Infrastructure
+      - BTC Mining / AI Pivot
+    description: Bitcoin miners and former miners pivoting capacity toward HPC, AI hosting, or data-center
+      power assets.
+    keywords:
+      - bitcoin mining
+      - miner
+      - hpc
+      - ai data center
+      - hosting
+      - hashrate
+      - power monetization
+    intake:
+      priority: 4
+      confidence: 0.72
+      keywords:
+        - bitcoin mining
+        - crypto mining
+        - data center
+        - hpc
+        - hashrate
+    holdings:
+      - ticker: IREN
+        name: IREN
+        note: bitcoin mining / AI data centers
+      - ticker: APLD
+        name: Applied Digital
+        note: AI data centers
+      - ticker: CORZ
+        name: Core Scientific
+        note: bitcoin mining / HPC hosting
+      - ticker: CIFR
+        name: Cipher Mining
+        note: bitcoin mining / HPC optionality
+      - ticker: CLSK
+        name: CleanSpark
+        note: bitcoin mining
+      - ticker: WULF
+        name: TeraWulf
+        note: bitcoin mining / HPC optionality
+      - ticker: MARA
+        name: MARA Holdings
+        note: bitcoin mining
+      - ticker: RIOT
+        name: Riot Platforms
+        note: bitcoin mining
+      - ticker: BITF
+        name: Bitfarms
+        note: bitcoin mining
+      - ticker: HIVE
+        name: HIVE Digital
+        note: bitcoin mining / GPU cloud
+      - ticker: HUT
+        name: Hut 8
+        note: bitcoin mining / HPC
+      - ticker: SLNH
+        name: Soluna Holdings, Inc
+        note: renewable-powered data centers / bitcoin mining / AI compute optionality
+      - ticker: KEEL
+        name: Keel Infrastructure Corp.
+        note: 'KEEL: bitcoin mining + AI/HPC data-center compute/hosting.'
+    candidates:
+      - ticker: IREN
+        name: IREN
+        note: bitcoin mining / AI data centers
+      - ticker: APLD
+        name: Applied Digital
+        note: AI data centers
+      - ticker: CORZ
+        name: Core Scientific
+        note: bitcoin mining / HPC hosting
+      - ticker: CIFR
+        name: Cipher Mining
+        note: bitcoin mining / HPC optionality
+      - ticker: CLSK
+        name: CleanSpark
+        note: bitcoin mining
+      - ticker: WULF
+        name: TeraWulf
+        note: bitcoin mining / HPC optionality
+      - ticker: MARA
+        name: MARA Holdings
+        note: bitcoin mining
+      - ticker: RIOT
+        name: Riot Platforms
+        note: bitcoin mining
+      - ticker: BTDR
+        name: Bitdeer Technologies
+        note: bitcoin mining / cloud hashrate
+      - ticker: HUT
+        name: Hut 8
+        note: bitcoin mining / HPC
+      - ticker: HIVE
+        name: HIVE Digital
+        note: bitcoin mining / GPU cloud
+      - ticker: BITF
+        name: Bitfarms
+        note: bitcoin mining
+      - ticker: CAN
+        name: Canaan
+        note: bitcoin mining ASICs
+      - ticker: SLNH
+        name: Soluna Holdings, Inc
+        note: SLNH missing reliable context; requires web_context (sector/industry/businessSummary) to
+          classify.
+      - ticker: KEEL
+        name: Keel Infrastructure Corp.
+        note: 'KEEL: bitcoin mining + AI/HPC data-center compute/hosting.'
+  - id: software
+    label: Software
+    short: Software
+    color: '#b8a4ff'
+    accent: oklch(75% 0.14 295)
+    path:
+      - Technology
+      - Software
+      - Enterprise / Data / AI Software
+    description: Large-cap software, SaaS, data infrastructure, observability, enterprise workflow, and
+      AI application platforms.
+    keywords:
+      - software
+      - saas
+      - cloud
+      - data
+      - workflow
+      - enterprise
+      - analytics
+      - observability
+      - cloud software
+      - data infrastructure
+      - AI software
+    intake:
+      priority: 12
+      confidence: 0.68
+      keywords:
+        - software
+        - saas
+        - cloud platform
+        - data platform
+        - observability
+    holdings:
+      - ticker: MSFT
+        name: Microsoft
+        note: large-cap software / cloud
+      - ticker: ORCL
+        name: Oracle
+        note: database / cloud infrastructure software
+      - ticker: CRM
+        name: Salesforce
+        note: enterprise SaaS
+      - ticker: NOW
+        name: ServiceNow
+        note: workflow SaaS
+      - ticker: ADBE
+        name: Adobe
+        note: creative / document software
+      - ticker: SNOW
+        name: Snowflake
+        note: data cloud
+      - ticker: DDOG
+        name: Datadog
+        note: observability
+      - ticker: PLTR
+        name: Palantir
+        note: AI / analytics software
+      - ticker: MDB
+        name: MongoDB
+        note: database software
+      - ticker: ESTC
+        name: Elastic
+        note: search / observability software
+      - ticker: TEAM
+        name: Atlassian
+        note: collaboration software
+    candidates:
+      - ticker: MSFT
+        name: Microsoft
+        note: large-cap software / cloud
+      - ticker: ORCL
+        name: Oracle
+        note: database / cloud infrastructure software
+      - ticker: CRM
+        name: Salesforce
+        note: enterprise SaaS
+      - ticker: NOW
+        name: ServiceNow
+        note: workflow SaaS
+      - ticker: ADBE
+        name: Adobe
+        note: creative / document software
+      - ticker: SNOW
+        name: Snowflake
+        note: data cloud
+      - ticker: DDOG
+        name: Datadog
+        note: observability
+      - ticker: PLTR
+        name: Palantir
+        note: AI / analytics software
+      - ticker: TEAM
+        name: Atlassian
+        note: collaboration software
+      - ticker: WDAY
+        name: Workday
+        note: enterprise SaaS
+      - ticker: INTU
+        name: Intuit
+        note: financial software
+      - ticker: MDB
+        name: MongoDB
+        note: database software
+      - ticker: ESTC
+        name: Elastic
+        note: search / observability software
+      - ticker: SHOP
+        name: Shopify
+        note: commerce software
+      - ticker: APP
+        name: AppLovin
+        note: advertising / app software
+  - id: semiconductors
+    label: Semiconductors
+    short: Semis
+    color: '#55d6be'
+    accent: oklch(76% 0.15 178)
+    path:
+      - Technology
+      - Hardware
+      - Semiconductors
+    description: AI accelerators, CPUs/GPUs, memory, foundry, semiconductor equipment, analog, networking,
+      and edge chips.
+    keywords:
+      - semiconductor
+      - chip
+      - foundry
+      - memory
+      - lithography
+      - gpu
+      - accelerator
+      - analog
+      - chips
+      - semiconductor equipment
+    intake:
+      priority: 2
+      confidence: 0.74
+      keywords:
+        - semiconductor
+        - chip
+        - gallium nitride
+        - silicon carbide
+        - power ic
+    holdings:
+      - ticker: NVDA
+        name: Nvidia
+        note: AI accelerators
+      - ticker: AMD
+        name: AMD
+        note: CPUs / GPUs
+      - ticker: AVGO
+        name: Broadcom
+        note: AI networking / custom silicon
+      - ticker: TSM
+        name: TSMC ADR
+        note: foundry
+      - ticker: ASML
+        name: ASML ADR
+        note: lithography
+      - ticker: MU
+        name: Micron
+        note: memory
+      - ticker: MRVL
+        name: Marvell
+        note: data-center semis
+      - ticker: QCOM
+        name: Qualcomm
+        note: mobile / edge semis
+      - ticker: ARM
+        name: Arm Holdings
+        note: CPU IP
+      - ticker: INTC
+        name: Intel
+        note: CPUs / foundry
+      - ticker: AMAT
+        name: Applied Materials
+        note: semiconductor equipment
+      - ticker: VSH
+        name: Vishay Intertechnology, Inc.
+        note: discrete semiconductors / passive components
+      - ticker: TRT
+        name: Trio-Tech International
+        note: semiconductor test equipment / services
+      - ticker: NVTS
+        name: Navitas Semiconductor Corp
+        note: GaN / SiC power semiconductors
+      - ticker: PENG
+        name: Penguin Solutions, Inc.
+        note: AI / HPC infrastructure and memory systems
+    candidates:
+      - ticker: NVDA
+        name: Nvidia
+        note: AI accelerators
+      - ticker: AMD
+        name: AMD
+        note: CPUs / GPUs
+      - ticker: AVGO
+        name: Broadcom
+        note: AI networking / custom silicon
+      - ticker: TSM
+        name: TSMC ADR
+        note: foundry
+      - ticker: ASML
+        name: ASML ADR
+        note: lithography
+      - ticker: MU
+        name: Micron
+        note: memory
+      - ticker: MRVL
+        name: Marvell
+        note: data-center semis
+      - ticker: QCOM
+        name: Qualcomm
+        note: mobile / edge semis
+      - ticker: INTC
+        name: Intel
+        note: CPUs / foundry
+      - ticker: AMAT
+        name: Applied Materials
+        note: semiconductor equipment
+      - ticker: LRCX
+        name: Lam Research
+        note: semiconductor equipment
+      - ticker: KLAC
+        name: KLA
+        note: process control / metrology
+      - ticker: ADI
+        name: Analog Devices
+        note: analog semiconductors
+      - ticker: TXN
+        name: Texas Instruments
+        note: analog / embedded semis
+      - ticker: ARM
+        name: Arm Holdings
+        note: CPU IP
+      - ticker: 'ON'
+        name: ON Semiconductor
+        note: power / auto semis
+      - ticker: VSH
+        name: Vishay Intertechnology, Inc.
+        note: 'VSH: discrete semiconductor + passive components manufacturer.'
+      - ticker: TRT
+        name: Trio-Tech International
+        note: 'TRT: semiconductor test equipment/services (mapped to semiconductors basket).'
+      - ticker: NVTS
+        name: Navitas Semiconductor Corp
+        note: NVTS missing reliable context; requires web_context (sector/industry/businessSummary) to
+          classify.
+      - ticker: PENG
+        name: Penguin Solutions, Inc.
+        note: PENG missing reliable context; requires web_context (sector/industry/businessSummary) to
+          classify.
+  - id: metals
+    label: Metals
+    short: Metals
+    color: '#d2c7b8'
+    accent: oklch(82% 0.04 72)
+    path:
+      - Materials
+      - Metals & Mining
+      - Base Metals / Steel
+    description: Copper, aluminum, steel, iron ore, base metals, and diversified miners.
+    keywords:
+      - copper
+      - aluminum
+      - steel
+      - mining
+      - metals
+      - iron ore
+      - base metals
+    intake:
+      priority: 13
+      confidence: 0.68
+      keywords:
+        - copper
+        - aluminum
+        - steel
+        - iron ore
+        - base metals
+    holdings:
+      - ticker: FCX
+        name: Freeport-McMoRan
+        note: copper / gold mining
+      - ticker: SCCO
+        name: Southern Copper
+        note: copper mining
+      - ticker: AA
+        name: Alcoa
+        note: aluminum
+      - ticker: TECK
+        name: Teck Resources
+        note: base metals
+      - ticker: RIO
+        name: Rio Tinto ADR
+        note: diversified mining
+      - ticker: BHP
+        name: BHP ADR
+        note: diversified mining
+      - ticker: CLF
+        name: Cleveland-Cliffs
+        note: steel / iron ore
+      - ticker: NUE
+        name: Nucor
+        note: steel
+    candidates:
+      - ticker: FCX
+        name: Freeport-McMoRan
+        note: copper / gold mining
+      - ticker: SCCO
+        name: Southern Copper
+        note: copper mining
+      - ticker: AA
+        name: Alcoa
+        note: aluminum
+      - ticker: TECK
+        name: Teck Resources
+        note: base metals
+      - ticker: RIO
+        name: Rio Tinto ADR
+        note: diversified mining
+      - ticker: BHP
+        name: BHP ADR
+        note: diversified mining
+      - ticker: CLF
+        name: Cleveland-Cliffs
+        note: steel / iron ore
+      - ticker: NUE
+        name: Nucor
+        note: steel
+      - ticker: VALE
+        name: Vale ADR
+        note: iron ore / base metals
+      - ticker: STLD
+        name: Steel Dynamics
+        note: steel
+      - ticker: CMC
+        name: Commercial Metals
+        note: steel / rebar
+      - ticker: MT
+        name: ArcelorMittal ADR
+        note: global steel
+      - ticker: HBM
+        name: Hudbay Minerals
+        note: copper / base metals
+  - id: fertilizer
+    label: Fertilizer / crop nutrients
+    short: Fertilizer
+    color: '#c6df63'
+    accent: oklch(82% 0.14 112)
+    path:
+      - Materials
+      - Agricultural Inputs
+      - Fertilizer / Crop Nutrients
+    description: Fertilizer, crop nutrients, nitrogen, phosphate, potash, and adjacent agricultural input
+      producers.
+    keywords:
+      - fertilizer
+      - crop nutrients
+      - nitrogen
+      - potash
+      - phosphate
+      - ammonia
+      - ag inputs
+    intake:
+      priority: 5
+      confidence: 0.78
+      keywords:
+        - fertilizer
+        - potash
+        - phosphate
+        - nitrogen
+        - ammonia
+        - crop nutrient
+    holdings:
+      - ticker: NTR
+        name: Nutrien
+        note: potash / nitrogen / ag retail
+      - ticker: MOS
+        name: Mosaic
+        note: phosphate / potash fertilizer
+      - ticker: CF
+        name: CF Industries
+        note: nitrogen fertilizer
+      - ticker: ICL
+        name: ICL Group
+        note: potash / specialty fertilizers
+      - ticker: SQM
+        name: SQM
+        note: specialty plant nutrition / potash
+      - ticker: UAN
+        name: CVR Partners
+        note: nitrogen fertilizer MLP
+      - ticker: LXU
+        name: LSB Industries
+        note: ammonia / nitrogen products
+      - ticker: SMG
+        name: Scotts Miracle-Gro
+        note: consumer lawn and garden fertilizer
+    candidates:
+      - ticker: NTR
+        name: Nutrien
+        note: potash / nitrogen / ag retail
+      - ticker: MOS
+        name: Mosaic
+        note: phosphate / potash fertilizer
+      - ticker: CF
+        name: CF Industries
+        note: nitrogen fertilizer
+      - ticker: ICL
+        name: ICL Group
+        note: potash / specialty fertilizers
+      - ticker: SQM
+        name: SQM
+        note: specialty plant nutrition / potash
+      - ticker: UAN
+        name: CVR Partners
+        note: nitrogen fertilizer MLP
+      - ticker: LXU
+        name: LSB Industries
+        note: ammonia / nitrogen products
+      - ticker: SMG
+        name: Scotts Miracle-Gro
+        note: consumer lawn and garden fertilizer
+      - ticker: CTVA
+        name: Corteva
+        note: seeds / crop protection; ag-input adjacent
+      - ticker: FMC
+        name: FMC
+        note: crop protection; ag-input adjacent
+      - ticker: AVD
+        name: American Vanguard
+        note: crop protection; ag-input adjacent
+      - ticker: IPI
+        name: Intrepid Potash
+        note: potash / specialty fertilizer
+  - id: photonics
+    label: Photonics
+    short: Photonics
+    color: '#f2c95d'
+    accent: oklch(82% 0.14 82)
+    path:
+      - Technology
+      - Hardware
+      - Photonics / Optical Infrastructure
+    description: Optical networking, lasers, optical components, photonic process tools, and compound
+      semiconductor substrates.
+    keywords:
+      - optical
+      - photonics
+      - laser
+      - fiber
+      - transceiver
+      - datacenter optical
+      - compound semiconductor
+      - optical networking
+      - lasers
+      - transceivers
+      - fiber optics
+    intake:
+      priority: 6
+      confidence: 0.74
+      keywords:
+        - photonics
+        - optical
+        - laser
+        - fiber
+        - transceiver
+    holdings:
+      - ticker: COHR
+        name: Coherent
+        note: lasers / optical components
+      - ticker: LITE
+        name: Lumentum
+        note: optical components
+      - ticker: FN
+        name: Fabrinet
+        note: optical manufacturing
+      - ticker: AAOI
+        name: Applied Optoelectronics
+        note: datacenter optical modules
+      - ticker: IPGP
+        name: IPG Photonics
+        note: fiber lasers
+      - ticker: MKSI
+        name: MKS Instruments
+        note: photonic / process tools
+      - ticker: HLIT
+        name: Harmonic
+        note: optical/video networking
+      - ticker: AXTI
+        name: AXT
+        note: compound semiconductor substrates
+      - ticker: CBRS
+        name: Cerebras Systems Inc.
+        note: AI wafer-scale chips / accelerator systems
+    candidates:
+      - ticker: COHR
+        name: Coherent
+        note: lasers / optical components
+      - ticker: LITE
+        name: Lumentum
+        note: optical components
+      - ticker: FN
+        name: Fabrinet
+        note: optical manufacturing
+      - ticker: AAOI
+        name: Applied Optoelectronics
+        note: datacenter optical modules
+      - ticker: IPGP
+        name: IPG Photonics
+        note: fiber lasers
+      - ticker: MKSI
+        name: MKS Instruments
+        note: photonic / process tools
+      - ticker: HLIT
+        name: Harmonic
+        note: optical/video networking
+      - ticker: AXTI
+        name: AXT
+        note: compound semiconductor substrates
+      - ticker: CIEN
+        name: Ciena
+        note: optical networking
+      - ticker: VIAV
+        name: Viavi Solutions
+        note: optical test / measurement
+      - ticker: OLED
+        name: Universal Display
+        note: display materials / emitters
+      - ticker: ONTO
+        name: Onto Innovation
+        note: process control / inspection
+      - ticker: COHU
+        name: Cohu
+        note: semiconductor test with photonics exposure
+      - ticker: CBRS
+        name: Cerebras Systems Inc.
+        note: CBRS missing reliable context; requires web_context (sector/industry/businessSummary) to
+          classify.
+  - id: quantum
+    label: Quantum
+    short: Quantum
+    color: '#9dffcb'
+    accent: oklch(84% 0.16 158)
+    path:
+      - Technology
+      - Advanced Compute
+      - Quantum Computing / Quantum Security
+    description: Pure-play and high-beta quantum computing, quantum sensing, and post-quantum security
+      companies.
+    keywords:
+      - quantum
+      - qubit
+      - trapped ion
+      - neutral atom
+      - annealing
+      - post-quantum
+      - quantum-safe
+      - quantum computing
+      - post-quantum security
+    intake:
+      priority: 1
+      confidence: 0.78
+      keywords:
+        - quantum
+        - qubit
+        - post-quantum
+        - quantum-safe
+        - annealing
+    holdings:
+      - ticker: IONQ
+        name: IonQ
+        note: trapped-ion quantum computing
+      - ticker: RGTI
+        name: Rigetti Computing
+        note: superconducting quantum computing
+      - ticker: QBTS
+        name: D-Wave Quantum
+        note: quantum annealing / systems
+      - ticker: QUBT
+        name: Quantum Computing Inc.
+        note: quantum software / photonics
+      - ticker: INFQ
+        name: Infleqtion
+        note: neutral-atom quantum computing / sensing
+      - ticker: QNC
+        name: Quantum eMotion
+        note: quantum cybersecurity / random generation
+      - ticker: ARQQ
+        name: Arqit Quantum
+        note: quantum-safe encryption
+      - ticker: LAES
+        name: SEALSQ
+        note: post-quantum security semiconductors
+    candidates:
+      - ticker: IONQ
+        name: IonQ
+        note: trapped-ion quantum computing
+      - ticker: RGTI
+        name: Rigetti Computing
+        note: superconducting quantum computing
+      - ticker: QBTS
+        name: D-Wave Quantum
+        note: quantum annealing / systems
+      - ticker: QUBT
+        name: Quantum Computing Inc.
+        note: quantum software / photonics
+      - ticker: INFQ
+        name: Infleqtion
+        note: neutral-atom quantum computing / sensing
+      - ticker: QNC
+        name: Quantum eMotion
+        note: quantum cybersecurity / random generation
+      - ticker: ARQQ
+        name: Arqit Quantum
+        note: quantum-safe encryption
+      - ticker: LAES
+        name: SEALSQ
+        note: post-quantum security semiconductors
+      - ticker: QMCO
+        name: Quantum Corporation
+        note: storage systems; name-adjacent, not a quantum computing pure play
+      - ticker: FORM
+        name: FormFactor
+        note: cryogenic probe cards / quantum test infrastructure
+      - ticker: HON
+        name: Honeywell
+        note: majority owner of Quantinuum; diluted mega-cap exposure
+      - ticker: IBM
+        name: IBM
+        note: quantum computing platform; diluted mega-cap exposure
+  - id: crypto
+    label: Crypto
+    short: Crypto
+    color: '#f6b35b'
+    accent: oklch(79% 0.14 63)
+    path:
+      - Digital Assets
+      - Cryptoassets
+      - Liquid Crypto Pairs
+    description: Liquid cryptoassets tracked as Yahoo USD pairs.
+    keywords:
+      - cryptoasset
+      - crypto
+      - blockchain
+      - token
+      - usd pair
+      - cryptocurrency
+    holdings:
+      - ticker: BTC-USD
+        name: Bitcoin
+        note: cryptoasset
+      - ticker: ETH-USD
+        name: Ethereum
+        note: cryptoasset
+      - ticker: SOL-USD
+        name: Solana
+        note: cryptoasset
+      - ticker: BNB-USD
+        name: BNB
+        note: cryptoasset
+      - ticker: XRP-USD
+        name: XRP
+        note: cryptoasset
+      - ticker: ADA-USD
+        name: Cardano
+        note: cryptoasset
+      - ticker: DOGE-USD
+        name: Dogecoin
+        note: cryptoasset
+      - ticker: LINK-USD
+        name: Chainlink
+        note: cryptoasset
+    candidates:
+      - ticker: BTC-USD
+        name: Bitcoin
+        note: cryptoasset
+      - ticker: ETH-USD
+        name: Ethereum
+        note: cryptoasset
+      - ticker: SOL-USD
+        name: Solana
+        note: cryptoasset
+      - ticker: BNB-USD
+        name: BNB
+        note: cryptoasset
+      - ticker: XRP-USD
+        name: XRP
+        note: cryptoasset
+      - ticker: ADA-USD
+        name: Cardano
+        note: cryptoasset
+      - ticker: DOGE-USD
+        name: Dogecoin
+        note: cryptoasset
+      - ticker: LINK-USD
+        name: Chainlink
+        note: cryptoasset
+      - ticker: AVAX-USD
+        name: Avalanche
+        note: cryptoasset
+      - ticker: DOT-USD
+        name: Polkadot
+        note: cryptoasset
+      - ticker: LTC-USD
+        name: Litecoin
+        note: cryptoasset
+      - ticker: BCH-USD
+        name: Bitcoin Cash
+        note: cryptoasset
+      - ticker: UNI-USD
+        name: Uniswap
+        note: cryptoasset
+      - ticker: AAVE-USD
+        name: Aave
+        note: cryptoasset
+      - ticker: NEAR-USD
+        name: NEAR Protocol
+        note: cryptoasset
+  - id: oil
+    label: Oil
+    short: Oil
+    color: '#a8d46f'
+    accent: oklch(79% 0.15 128)
+    path:
+      - Energy
+      - Oil & Gas
+      - Integrated / E&P / Services / Refining
+    description: Integrated oil, E&P, oilfield services, refining, and energy infrastructure tied primarily
+      to crude.
+    keywords:
+      - oil
+      - energy
+      - e&p
+      - refining
+      - oilfield
+      - integrated oil
+      - crude
+      - oilfield services
+    intake:
+      priority: 10
+      confidence: 0.72
+      keywords:
+        - oil and gas
+        - exploration and production
+        - oilfield
+        - refining
+        - crude oil
+    holdings:
+      - ticker: XOM
+        name: Exxon Mobil
+        note: integrated oil
+      - ticker: CVX
+        name: Chevron
+        note: integrated oil
+      - ticker: COP
+        name: ConocoPhillips
+        note: E&P
+      - ticker: EOG
+        name: EOG Resources
+        note: E&P
+      - ticker: OXY
+        name: Occidental Petroleum
+        note: E&P
+      - ticker: SLB
+        name: SLB
+        note: oilfield services
+      - ticker: HAL
+        name: Halliburton
+        note: oilfield services
+      - ticker: VLO
+        name: Valero
+        note: refining
+    candidates:
+      - ticker: XOM
+        name: Exxon Mobil
+        note: integrated oil
+      - ticker: CVX
+        name: Chevron
+        note: integrated oil
+      - ticker: COP
+        name: ConocoPhillips
+        note: E&P
+      - ticker: EOG
+        name: EOG Resources
+        note: E&P
+      - ticker: OXY
+        name: Occidental Petroleum
+        note: E&P
+      - ticker: SLB
+        name: SLB
+        note: oilfield services
+      - ticker: HAL
+        name: Halliburton
+        note: oilfield services
+      - ticker: VLO
+        name: Valero
+        note: refining
+      - ticker: MPC
+        name: Marathon Petroleum
+        note: refining
+      - ticker: PSX
+        name: Phillips 66
+        note: refining / midstream
+      - ticker: DVN
+        name: Devon Energy
+        note: E&P
+      - ticker: FANG
+        name: Diamondback Energy
+        note: E&P
+      - ticker: BKR
+        name: Baker Hughes
+        note: oilfield services / LNG equipment
+  - id: oil_tankers
+    label: Oil tankers
+    short: Tankers
+    color: '#7ddbd2'
+    accent: oklch(78% 0.12 190)
+    path:
+      - Energy
+      - Shipping
+      - Oil Tankers
+    description: Crude and product tanker owners/operators with listed U.S. or ADR tickers where practical.
+    keywords:
+      - tanker
+      - crude tanker
+      - product tanker
+      - shipping
+      - marine transport
+    intake:
+      priority: 9
+      confidence: 0.74
+      keywords:
+        - tanker
+        - marine transportation
+        - product tankers
+        - crude tankers
+    holdings:
+      - ticker: FRO
+        name: Frontline
+        note: crude/product tankers
+      - ticker: DHT
+        name: DHT Holdings
+        note: crude tankers
+      - ticker: STNG
+        name: Scorpio Tankers
+        note: product tankers
+      - ticker: TNK
+        name: Teekay Tankers
+        note: crude/product tankers
+      - ticker: INSW
+        name: International Seaways
+        note: crude/product tankers
+      - ticker: NAT
+        name: Nordic American Tankers
+        note: crude tankers
+      - ticker: CMBT
+        name: CMB.TECH
+        note: former Euronav crude tanker fleet / marine technology
+      - ticker: TEN
+        name: Tsakos Energy Navigation
+        note: crude/product tankers
+    candidates:
+      - ticker: FRO
+        name: Frontline
+        note: crude/product tankers
+      - ticker: DHT
+        name: DHT Holdings
+        note: crude tankers
+      - ticker: STNG
+        name: Scorpio Tankers
+        note: product tankers
+      - ticker: TNK
+        name: Teekay Tankers
+        note: crude/product tankers
+      - ticker: INSW
+        name: International Seaways
+        note: crude/product tankers
+      - ticker: NAT
+        name: Nordic American Tankers
+        note: crude tankers
+      - ticker: CMBT
+        name: CMB.TECH
+        note: former Euronav crude tanker fleet / marine technology
+      - ticker: TEN
+        name: Tsakos Energy Navigation
+        note: crude/product tankers
+      - ticker: ASC
+        name: Ardmore Shipping
+        note: product tankers
+      - ticker: TRMD
+        name: TORM
+        note: product tankers
+      - ticker: SFL
+        name: SFL Corporation
+        note: shipping lessor with tanker exposure
+  - id: rare_earth_minerals
+    label: Rare earth minerals
+    short: Rare earth
+    color: '#e06f8f'
+    accent: oklch(68% 0.16 350)
+    path:
+      - Materials
+      - Critical Minerals
+      - Rare Earth / Strategic Minerals
+    description: Rare earth producers/developers and strategic/critical minerals companies with related
+      exposure.
+    keywords:
+      - rare earth
+      - critical minerals
+      - strategic metals
+      - antimony
+      - uranium
+      - mineral development
+      - lithium
+    intake:
+      priority: 8
+      confidence: 0.74
+      keywords:
+        - rare earth
+        - critical minerals
+        - lithium
+        - antimony
+        - strategic metals
+    holdings:
+      - ticker: MP
+        name: MP Materials
+        note: rare earth producer
+      - ticker: UUUU
+        name: Energy Fuels
+        note: uranium / rare earth processing
+      - ticker: UAMY
+        name: United States Antimony
+        note: critical minerals
+      - ticker: TMRC
+        name: Texas Mineral Resources
+        note: rare earth development
+      - ticker: LYSDY
+        name: Lynas Rare Earths ADR
+        note: rare earth producer
+      - ticker: AREC
+        name: American Resources
+        note: critical minerals / carbon
+      - ticker: CRML
+        name: Critical Metals
+        note: critical minerals development
+      - ticker: REMX
+        name: VanEck Rare Earth/Strategic Metals ETF
+        note: thematic ETF anchor
+    candidates:
+      - ticker: MP
+        name: MP Materials
+        note: rare earth producer
+      - ticker: UUUU
+        name: Energy Fuels
+        note: uranium / rare earth processing
+      - ticker: UAMY
+        name: United States Antimony
+        note: critical minerals
+      - ticker: TMRC
+        name: Texas Mineral Resources
+        note: rare earth development
+      - ticker: LYSDY
+        name: Lynas Rare Earths ADR
+        note: rare earth producer
+      - ticker: AREC
+        name: American Resources
+        note: critical minerals / carbon
+      - ticker: CRML
+        name: Critical Metals
+        note: critical minerals development
+      - ticker: REMX
+        name: VanEck Rare Earth/Strategic Metals ETF
+        note: thematic ETF anchor
+      - ticker: ABAT
+        name: American Battery Technology
+        note: battery metals / recycling
+      - ticker: PLL
+        name: Piedmont Lithium
+        note: critical battery minerals
+      - ticker: LAC
+        name: Lithium Americas
+        note: critical battery minerals
+      - ticker: NIOBF
+        name: NioCorp Developments
+        note: critical minerals development
+  - id: construction
+    label: Construction
+    short: Build
+    color: '#ff7f95'
+    accent: oklch(72% 0.16 16)
+    path:
+      - Industrials
+      - Construction & Infrastructure
+      - Builders / Equipment / Aggregates
+    description: Homebuilders, construction equipment, infrastructure construction, aggregates, and building
+      materials.
+    keywords:
+      - homebuilding
+      - construction
+      - equipment rental
+      - aggregates
+      - materials
+      - infrastructure
+      - building materials
+    intake:
+      priority: 11
+      confidence: 0.72
+      keywords:
+        - homebuilder
+        - construction
+        - aggregates
+        - building materials
+        - equipment rental
+    holdings:
+      - ticker: DHI
+        name: D.R. Horton
+        note: homebuilding
+      - ticker: LEN
+        name: Lennar
+        note: homebuilding
+      - ticker: PHM
+        name: PulteGroup
+        note: homebuilding
+      - ticker: CAT
+        name: Caterpillar
+        note: construction equipment
+      - ticker: URI
+        name: United Rentals
+        note: equipment rental
+      - ticker: VMC
+        name: Vulcan Materials
+        note: aggregates
+      - ticker: MLM
+        name: Martin Marietta Materials
+        note: aggregates
+      - ticker: PWR
+        name: Quanta Services
+        note: infrastructure construction
+    candidates:
+      - ticker: DHI
+        name: D.R. Horton
+        note: homebuilding
+      - ticker: LEN
+        name: Lennar
+        note: homebuilding
+      - ticker: PHM
+        name: PulteGroup
+        note: homebuilding
+      - ticker: CAT
+        name: Caterpillar
+        note: construction equipment
+      - ticker: URI
+        name: United Rentals
+        note: equipment rental
+      - ticker: VMC
+        name: Vulcan Materials
+        note: aggregates
+      - ticker: MLM
+        name: Martin Marietta Materials
+        note: aggregates
+      - ticker: PWR
+        name: Quanta Services
+        note: infrastructure construction
+      - ticker: TOL
+        name: Toll Brothers
+        note: homebuilding
+      - ticker: KBH
+        name: KB Home
+        note: homebuilding
+      - ticker: NVR
+        name: NVR
+        note: homebuilding
+      - ticker: BLD
+        name: TopBuild
+        note: building insulation / installation
+      - ticker: MAS
+        name: Masco
+        note: building products
+      - ticker: EXP
+        name: Eagle Materials
+        note: cement / wallboard
+      - ticker: ROAD
+        name: Construction Partners
+        note: road construction
+  - id: power_grid
+    label: Power / grid
+    short: Grid
+    color: '#9ae3a5'
+    accent: oklch(82% 0.12 145)
+    path:
+      - Energy
+      - Power Infrastructure
+      - Power / Grid
+    description: Power generation, electrical equipment, grid construction, utilities, nuclear/power producers,
+      and grid storage.
+    keywords:
+      - power
+      - grid
+      - electrical
+      - utility
+      - nuclear
+      - generation
+      - energy storage
+      - transmission
+      - electrical equipment
+    intake:
+      priority: 3
+      confidence: 0.72
+      keywords:
+        - nuclear
+        - fission
+        - power plant
+        - electricity
+        - electrical equipment
+        - utility
+        - grid
+    holdings:
+      - ticker: GEV
+        name: GE Vernova
+        note: power generation / grid equipment
+      - ticker: ETN
+        name: Eaton
+        note: electrical equipment
+      - ticker: HUBB
+        name: Hubbell
+        note: electrical / grid equipment
+      - ticker: PWR
+        name: Quanta Services
+        note: grid construction
+      - ticker: VST
+        name: Vistra
+        note: power generation
+      - ticker: CEG
+        name: Constellation Energy
+        note: nuclear / power generation
+      - ticker: NEE
+        name: NextEra Energy
+        note: utility / renewables
+      - ticker: NRG
+        name: NRG Energy
+        note: power generation / retail
+      - ticker: TE
+        name: T1 Energy Inc.
+        note: solar modules / cells and electrical equipment
+      - ticker: OKLO
+        name: Oklo Inc.
+        note: advanced nuclear fission power plants
+    candidates:
+      - ticker: GEV
+        name: GE Vernova
+        note: power generation / grid equipment
+      - ticker: ETN
+        name: Eaton
+        note: electrical equipment
+      - ticker: HUBB
+        name: Hubbell
+        note: electrical / grid equipment
+      - ticker: PWR
+        name: Quanta Services
+        note: grid construction
+      - ticker: VST
+        name: Vistra
+        note: power generation
+      - ticker: CEG
+        name: Constellation Energy
+        note: nuclear / power generation
+      - ticker: NEE
+        name: NextEra Energy
+        note: utility / renewables
+      - ticker: NRG
+        name: NRG Energy
+        note: power generation / retail
+      - ticker: POWL
+        name: Powell Industries
+        note: electrical equipment / power systems
+      - ticker: AMSC
+        name: American Superconductor
+        note: grid systems
+      - ticker: GNRC
+        name: Generac
+        note: backup power / distributed energy
+      - ticker: FLNC
+        name: Fluence Energy
+        note: grid-scale energy storage
+      - ticker: AEP
+        name: American Electric Power
+        note: regulated utility / transmission
+      - ticker: SO
+        name: Southern Company
+        note: regulated utility / power generation
+      - ticker: DUK
+        name: Duke Energy
+        note: regulated utility
+      - ticker: TE
+        name: T1 Energy Inc.
+        note: TE could not be classified from provided context; requires ticker disambiguation (exact
+          exchange/company).
+      - ticker: OKLO
+        name: Oklo Inc.
+        note: OKLO missing reliable context in payload; requires web_context to classify (e.g., nuclear
+          vs other exposure).

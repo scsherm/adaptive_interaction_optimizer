@@ -9,6 +9,11 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from env_config import load_dotenv
+
+# Subprocess stages inherit this environment, so keys in .env.local reach them.
+load_dotenv()
+
 from category_workbench import price_refresh_status
 from market_config import load_market_config, sync_config_end_date
 
@@ -20,8 +25,7 @@ RUNS_DIR = ROOT / "runs"
 
 ARTIFACTS = [
     ROOT / "README.md",
-    ROOT / "config" / "baskets.yaml",
-    ROOT / "config" / "taxonomy.yaml",
+    ROOT / "config" / "universe.yaml",
     DATA_DIR / "basket_definitions.csv",
     DATA_DIR / "source_metadata.csv",
     DATA_DIR / "basket_metrics.csv",
@@ -116,7 +120,7 @@ def main() -> int:
     parser.add_argument(
         "--keep-config-end-date",
         action="store_true",
-        help="Keep config/baskets.yaml end_date unchanged instead of advancing to the latest completed U.S. equity session.",
+        help="Keep config/universe.yaml end_date unchanged instead of advancing to the latest completed U.S. equity session.",
     )
     parser.add_argument(
         "--no-auto-refresh-prices",

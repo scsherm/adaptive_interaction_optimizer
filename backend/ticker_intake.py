@@ -15,9 +15,16 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import quote_plus
 
-from category_workbench import TAXONOMY, category_state, dump_baskets_yaml, load_config_data
+from category_workbench import category_state
 from market_config import ROOT, load_market_config
-from taxonomy_config import add_taxonomy_candidate, load_effective_taxonomy, load_taxonomy_config
+from taxonomy_config import load_effective_taxonomy, load_taxonomy_config
+from universe import (
+    add_candidate_row,
+    add_holding_row,
+    load_universe,
+    load_universe_data,
+    save_universe_data,
+)
 
 
 DATA_DIR = ROOT / "data"
@@ -132,12 +139,6 @@ def write_cached_context(ticker: str, payload: dict[str, Any]) -> None:
     context_cache_path(ticker).write_text(json.dumps(payload, indent=2, sort_keys=True))
 
 
-def save_config_data(data: dict[str, Any]) -> None:
-    from market_config import CONFIG_PATH
-
-    CONFIG_PATH.write_text(dump_baskets_yaml(data))
-
-
 def clean_ticker(value: str) -> str:
     ticker = value.strip().upper()
     ticker = ticker.removeprefix("$")
@@ -160,7 +161,7 @@ def current_memberships() -> dict[str, list[str]]:
 
 
 def known_candidate_index() -> dict[str, dict[str, Any]]:
-    taxonomy = load_effective_taxonomy(TAXONOMY)
+    taxonomy = load_effective_taxonomy()
     index: dict[str, dict[str, Any]] = {}
     for basket_id, row in taxonomy.items():
         for ticker, name, note in row.get("candidates", []):
@@ -310,29 +311,19 @@ def stockanalysis_context(ticker: str) -> dict[str, Any]:
 
 
 def strong_heuristic_basket(row: dict[str, Any]) -> tuple[str, float, str]:
+    """Guess a basket from scraped company context using the universe's intake keywords.
+
+    Rules are evaluated in the priority order declared in config/universe.yaml, so a
+    new basket becomes matchable by adding an `intake` block -- no code change.
+    """
     text = " ".join(
         str(row.get(key, ""))
         for key in ["companyName", "sector", "industry", "businessSummary", "localNote"]
     ).lower()
-    checks = [
-        ("quantum", 0.78, ["quantum", "qubit", "post-quantum", "quantum-safe", "annealing"]),
-        ("semiconductors", 0.74, ["semiconductor", "chip", "gallium nitride", "silicon carbide", "power ic"]),
-        ("power_grid", 0.72, ["nuclear", "fission", "power plant", "electricity", "electrical equipment", "utility", "grid"]),
-        ("btc_mining_ai_pivot", 0.72, ["bitcoin mining", "crypto mining", "data center", "hpc", "hashrate"]),
-        ("fertilizer", 0.78, ["fertilizer", "potash", "phosphate", "nitrogen", "ammonia", "crop nutrient"]),
-        ("photonics", 0.74, ["photonics", "optical", "laser", "fiber", "transceiver"]),
-        ("cybersecurity", 0.74, ["cybersecurity", "endpoint security", "zero trust", "identity security", "firewall"]),
-        ("rare_earth_minerals", 0.74, ["rare earth", "critical minerals", "lithium", "antimony", "strategic metals"]),
-        ("oil_tankers", 0.74, ["tanker", "marine transportation", "product tankers", "crude tankers"]),
-        ("oil", 0.72, ["oil and gas", "exploration and production", "oilfield", "refining", "crude oil"]),
-        ("construction", 0.72, ["homebuilder", "construction", "aggregates", "building materials", "equipment rental"]),
-        ("software", 0.68, ["software", "saas", "cloud platform", "data platform", "observability"]),
-        ("metals", 0.68, ["copper", "aluminum", "steel", "iron ore", "base metals"]),
-    ]
-    for basket_id, confidence, needles in checks:
-        for needle in needles:
-            if needle in text:
-                return basket_id, confidence, f"Context keyword match: {needle}"
+    for basket_id, rule in load_universe().intake_rules:
+        needle = rule.match(text)
+        if needle:
+            return basket_id, rule.confidence, f"Context keyword match: {needle}"
     return "", 0.0, ""
 
 
@@ -556,7 +547,7 @@ def extract_response_text(response: dict[str, Any]) -> str:
 def taxonomy_prompt_rows() -> list[dict[str, Any]]:
     config = load_market_config()
     labels = {basket.id: basket.label for basket in config.baskets}
-    effective = load_effective_taxonomy(TAXONOMY)
+    effective = load_effective_taxonomy()
     rows = []
     for basket in config.baskets:
         row = effective.get(basket.id, {})
@@ -726,7 +717,7 @@ def classify_intake(
         chunk_size=chunk_size or int(os.environ.get("OPENAI_TICKER_CHUNK_SIZE", "5")),
     )
 
-    taxonomy = load_effective_taxonomy(TAXONOMY)
+    taxonomy = load_effective_taxonomy()
     basket_ids = set(taxonomy)
     classified_rows = []
     for row in rows:
@@ -782,9 +773,13 @@ def classify_intake(
 
 
 def add_approved_tickers(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    config = load_market_config()
-    basket_ids = {basket.id for basket in config.baskets}
-    config_data = load_config_data()
+    """Append approved rows to the universe as both a holding and a taxonomy candidate.
+
+    Holdings and candidates share one file now, so every approved row is applied to a
+    single in-memory config that is written exactly once.
+    """
+    data = load_universe_data()
+    basket_rows = {row["id"]: row for row in data.get("baskets", []) if row.get("id")}
     added = []
     skipped = []
     for row in rows:
@@ -795,25 +790,24 @@ def add_approved_tickers(rows: list[dict[str, Any]]) -> dict[str, Any]:
         if not ticker or not valid_ticker_shape(ticker):
             skipped.append({"ticker": ticker, "reason": "Invalid ticker shape"})
             continue
-        if basket_id not in basket_ids:
+        basket = basket_rows.get(basket_id)
+        if basket is None:
             skipped.append({"ticker": ticker, "reason": f"Unknown basket: {basket_id}"})
+            continue
+        existing = {str(holding.get("ticker", "")).upper() for holding in basket.get("holdings", [])}
+        if ticker in existing:
+            skipped.append({"ticker": ticker, "basket": basket_id, "reason": "Already in basket"})
             continue
         name = str(row.get("name") or row.get("companyName") or ticker).strip() or ticker
         note = str(row.get("note") or row.get("suggestedNote") or "LLM-classified candidate").strip()
         taxonomy_path = [str(part) for part in row.get("taxonomyPath", []) if str(part).strip()]
-        for basket in config_data["baskets"]:
-            if basket["id"] != basket_id:
-                continue
-            existing = {holding["ticker"].upper() for holding in basket["holdings"]}
-            if ticker in existing:
-                skipped.append({"ticker": ticker, "basket": basket_id, "reason": "Already in basket"})
-                break
-            basket["holdings"].append({"ticker": ticker, "name": name, "note": note})
-            add_taxonomy_candidate(basket_id, ticker, name, note, taxonomy_path)
-            added.append({"ticker": ticker, "basket": basket_id, "name": name, "note": note})
-            break
+        if taxonomy_path and not basket.get("path"):
+            basket["path"] = taxonomy_path
+        add_holding_row(data, basket_id, ticker, name, note)
+        add_candidate_row(data, basket_id, ticker, name, note)
+        added.append({"ticker": ticker, "basket": basket_id, "name": name, "note": note})
     if added:
-        save_config_data(config_data)
+        save_universe_data(data)
     return {
         "added": added,
         "skipped": skipped,

@@ -1921,14 +1921,17 @@ HTML_TEMPLATE = """<!doctype html>
       }
     }
 
-    async function pollRunStatus() {
+    async function pollRunStatus(attempt = 0) {
       if (!state.setupAvailable) return;
+      // Re-arm unless the run has definitively finished. Only bailing out when
+      // `running` is false stranded the loop whenever a poll landed before the
+      // server had published the run, leaving the page stale after a good run.
+      const keepPolling = () => setTimeout(() => pollRunStatus(attempt + 1), 1600);
       try {
         state.runStatus = await apiJson("/api/run/status");
         if (state.view === "setup") renderSetup();
-        if (state.runStatus?.running) {
-          setTimeout(pollRunStatus, 1600);
-        } else if (state.runStatus?.state === "complete") {
+        const runState = state.runStatus?.state;
+        if (runState === "complete") {
           state.pendingChanges = false;
           state.setupMessage = "Run complete. Reloading updated workstation...";
           setTimeout(() => {
@@ -1936,10 +1939,15 @@ HTML_TEMPLATE = """<!doctype html>
             url.searchParams.set("run", state.runStatus.runId || Date.now().toString());
             window.location.replace(url.toString());
           }, 1200);
+          return;
         }
+        if (runState === "failed") return;
+        // While running, poll indefinitely; otherwise give the run ~30s to appear.
+        if (state.runStatus?.running || attempt < 20) keepPolling();
       } catch (error) {
         state.setupMessage = error.message;
         if (state.view === "setup") renderSetup();
+        if (attempt < 20) keepPolling();
       }
     }
 

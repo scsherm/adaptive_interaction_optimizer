@@ -1,88 +1,105 @@
 #!/usr/bin/env python3
+"""Taxonomy view over the canonical universe.
+
+Kept as a module so the intake and workbench call sites keep their shape, but
+there is no separate taxonomy file any more -- path, description, keywords, and
+the candidate set are basket fields in `config/universe.yaml`.
+"""
 from __future__ import annotations
 
-from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-import yaml
-
-from market_config import ROOT
-
-
-TAXONOMY_CONFIG_PATH = ROOT / "config" / "taxonomy.yaml"
-
-
-def _as_list(value: Any) -> list:
-    if value is None:
-        return []
-    if isinstance(value, list):
-        return value
-    return [value]
+from universe import (
+    UNIVERSE_PATH,
+    add_candidate_row,
+    load_universe,
+    load_universe_data,
+    save_universe_data,
+)
 
 
-def load_taxonomy_config(path: Path = TAXONOMY_CONFIG_PATH) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    loaded = yaml.safe_load(path.read_text()) or {}
-    return loaded if isinstance(loaded, dict) else {}
+TAXONOMY_CONFIG_PATH = UNIVERSE_PATH
+
+DEFAULT_CLASSIFICATION = {
+    "default_model": "gpt-5.4-nano",
+    "env_model_var": "OPENAI_TICKER_MODEL",
+    "provider": "openai_responses",
+}
 
 
-def save_taxonomy_config(data: dict[str, Any], path: Path = TAXONOMY_CONFIG_PATH) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=False))
-
-
-def load_effective_taxonomy(base_taxonomy: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    effective = deepcopy(base_taxonomy)
-    config = load_taxonomy_config()
-    configured_baskets = config.get("baskets", {}) if isinstance(config.get("baskets"), dict) else {}
-    for basket_id, row in configured_baskets.items():
-        if not isinstance(row, dict):
-            continue
-        target = effective.setdefault(basket_id, {"description": "", "keywords": [], "candidates": []})
-        if row.get("description"):
-            target["description"] = str(row["description"])
-        if row.get("path"):
-            target["path"] = [str(part) for part in _as_list(row["path"])]
-        if row.get("keywords"):
-            seen = {str(item).lower() for item in target.get("keywords", [])}
-            for keyword in _as_list(row["keywords"]):
-                keyword_text = str(keyword)
-                if keyword_text.lower() not in seen:
-                    target.setdefault("keywords", []).append(keyword_text)
-                    seen.add(keyword_text.lower())
-        existing = {str(item[0]).upper() for item in target.get("candidates", []) if item}
-        for candidate in _as_list(row.get("candidates")):
-            if not isinstance(candidate, dict):
-                continue
-            ticker = str(candidate.get("ticker", "")).upper().strip()
-            if not ticker or ticker in existing:
-                continue
-            target.setdefault("candidates", []).append(
-                (
-                    ticker,
-                    str(candidate.get("name") or ticker),
-                    str(candidate.get("note") or "LLM-classified candidate"),
-                )
-            )
-            existing.add(ticker)
-    return effective
-
-
-def taxonomy_options(base_taxonomy: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
-    effective = load_effective_taxonomy(base_taxonomy)
-    rows = []
-    for basket_id, row in effective.items():
-        rows.append(
-            {
-                "id": basket_id,
-                "path": row.get("path", []),
+def load_taxonomy_config(path: Path = UNIVERSE_PATH) -> dict[str, Any]:
+    """Legacy-shaped taxonomy config (`classification` + `baskets`) read from the universe."""
+    data = load_universe_data(path)
+    classification = data.get("classification")
+    if not isinstance(classification, dict):
+        classification = dict(DEFAULT_CLASSIFICATION)
+    return {
+        "version": data.get("version", 1),
+        "description": data.get("description", ""),
+        "classification": classification,
+        "baskets": {
+            row["id"]: {
+                "path": list(row.get("path", []) or []),
                 "description": row.get("description", ""),
-                "keywords": row.get("keywords", []),
+                "keywords": list(row.get("keywords", []) or []),
+                "candidates": list(row.get("candidates", []) or []),
             }
-        )
-    return rows
+            for row in data.get("baskets", [])
+            if isinstance(row, dict) and row.get("id")
+        },
+    }
+
+
+def save_taxonomy_config(data: dict[str, Any], path: Path = UNIVERSE_PATH) -> None:
+    """Write back only the taxonomy-owned fields, leaving holdings untouched."""
+    universe_data = load_universe_data(path)
+    baskets = data.get("baskets", {}) or {}
+    by_id = {row.get("id"): row for row in universe_data.get("baskets", [])}
+    for basket_id, row in baskets.items():
+        target = by_id.get(basket_id)
+        if target is None or not isinstance(row, dict):
+            continue
+        for key in ("path", "description", "keywords", "candidates"):
+            if key in row:
+                target[key] = row[key]
+    if isinstance(data.get("classification"), dict):
+        universe_data["classification"] = data["classification"]
+    save_universe_data(universe_data, path)
+
+
+def load_effective_taxonomy(
+    base_taxonomy: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, dict[str, Any]]:
+    """Basket taxonomy keyed by id. Candidates come back as (ticker, name, note) tuples.
+
+    `base_taxonomy` is accepted and ignored -- the universe is now the base.
+    """
+    universe = load_universe()
+    return {
+        basket.id: {
+            "path": list(basket.path),
+            "description": basket.description,
+            "keywords": list(basket.keywords),
+            "candidates": [candidate.as_tuple() for candidate in basket.candidates],
+        }
+        for basket in universe.baskets
+    }
+
+
+def taxonomy_options(
+    base_taxonomy: dict[str, dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    universe = load_universe()
+    return [
+        {
+            "id": basket.id,
+            "path": list(basket.path),
+            "description": basket.description,
+            "keywords": list(basket.keywords),
+        }
+        for basket in universe.baskets
+    ]
 
 
 def add_taxonomy_candidate(
@@ -92,20 +109,11 @@ def add_taxonomy_candidate(
     note: str,
     path: list[str] | None = None,
 ) -> None:
-    data = load_taxonomy_config()
-    data.setdefault("version", 1)
-    data.setdefault("description", "Layered basket taxonomy used for ticker intake and LLM classification.")
-    baskets = data.setdefault("baskets", {})
-    basket = baskets.setdefault(basket_id, {"path": path or [], "candidates": []})
-    if path and not basket.get("path"):
-        basket["path"] = path
-    candidates = basket.setdefault("candidates", [])
-    ticker = ticker.upper().strip()
-    for candidate in candidates:
-        if isinstance(candidate, dict) and str(candidate.get("ticker", "")).upper() == ticker:
-            candidate["name"] = name
-            candidate["note"] = note
-            save_taxonomy_config(data)
-            return
-    candidates.append({"ticker": ticker, "name": name, "note": note})
-    save_taxonomy_config(data)
+    data = load_universe_data()
+    row = next((item for item in data.get("baskets", []) if item.get("id") == basket_id), None)
+    if row is None:
+        raise KeyError(f"Unknown basket: {basket_id}")
+    if path and not row.get("path"):
+        row["path"] = list(path)
+    add_candidate_row(data, basket_id, ticker, name, note)
+    save_universe_data(data)
