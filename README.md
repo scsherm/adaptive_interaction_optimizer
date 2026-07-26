@@ -1,4 +1,4 @@
-# Adaptive Interaction Optimizer
+# Adaptive Interaction Optimizer WIP
 
 Interaction-focused system demonstrated through a market-basket research workstation.
 
