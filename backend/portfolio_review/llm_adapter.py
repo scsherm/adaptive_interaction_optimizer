@@ -1,41 +1,26 @@
 from __future__ import annotations
 
 import json
-import os
+import sys
 from pathlib import Path
 import urllib.error
 import urllib.request
 from typing import Any
 
 
-DEFAULT_MODEL = "gpt-5.1-mini"
+# gpt-5.1-mini does not exist; this path would have 404'd the moment USE_LLM
+# was turned on.
+DEFAULT_MODEL = "gpt-5.4-mini"
 ROOT = Path(__file__).resolve().parents[1]
+
+# Env files live at the project root, not under backend/. This module used to
+# look one directory too low, so USE_LLM and the API key never resolved.
+sys.path.insert(0, str(ROOT))
+from env_config import dotenv_values, env_flag, env_value  # noqa: E402
 
 
 def read_local_env() -> dict[str, str]:
-    values: dict[str, str] = {}
-    for path in [ROOT / ".env.local", ROOT / ".env"]:
-        if not path.exists():
-            continue
-        for line in path.read_text().splitlines():
-            stripped = line.strip()
-            if not stripped or stripped.startswith("#") or "=" not in stripped:
-                continue
-            key, value = stripped.split("=", 1)
-            values[key.strip()] = value.strip().strip('"').strip("'")
-    return values
-
-
-def env_value(name: str, default: str = "") -> str:
-    local_env = read_local_env()
-    return os.environ.get(name, local_env.get(name, default))
-
-
-def env_flag(name: str, default: bool = False) -> bool:
-    value = env_value(name, "")
-    if value in {"", None}:
-        return default
-    return value.strip().lower() in {"1", "true", "yes", "on"}
+    return dotenv_values()
 
 
 def load_llm_config() -> dict[str, Any]:

@@ -8,9 +8,10 @@
   },
   "scripts": {
     "setup": "python3 -m venv backend/.venv && backend/.venv/bin/python -m pip install -r backend/requirements.txt",
-    "dev": "PYTHONDONTWRITEBYTECODE=1 python3 backend/workbench_server.py 3000",
-    "check": "python3 scripts/check.py && node --check public/workstation-enhancements.js",
-    "start": "PYTHONDONTWRITEBYTECODE=1 python3 backend/workbench_server.py 3000",
+    "dev": "PYTHONDONTWRITEBYTECODE=1 backend/.venv/bin/python backend/workbench_server.py 3000",
+    "check": "backend/.venv/bin/python scripts/check.py && backend/.venv/bin/python scripts/test_universe.py && backend/.venv/bin/python scripts/test_agent_tools.py && node --check public/workstation-enhancements.js",
+    "ask": "backend/.venv/bin/python backend/agent.py",
+    "start": "PYTHONDONTWRITEBYTECODE=1 backend/.venv/bin/python backend/workbench_server.py 3000",
     "test": "npm run check"
   }
 }

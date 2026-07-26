@@ -6,12 +6,17 @@ import os
 import subprocess
 import sys
 import threading
-import time
 from datetime import UTC, datetime
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
+
+from env_config import load_dotenv
+
+# Populate OPENAI_API_KEY and friends from the project-root .env.local before any
+# module reads them.
+load_dotenv()
 
 from category_workbench import (
     ROOT,
@@ -86,8 +91,36 @@ def snapshot_run_status() -> dict:
         return json.loads(json.dumps(RUN_STATUS))
 
 
-def run_pipeline_background(options: dict) -> None:
+def claim_run_slot() -> str:
+    """Reserve the run slot and publish `running` before returning to the client.
+
+    The setup page starts polling the moment POST /api/run responds. If the
+    response still said `idle` -- which happened whenever the background thread's
+    prep work (end-date sync, price-status scan over every ticker) outlasted the
+    handler -- the poll loop matched neither the `running` nor the `complete`
+    branch, stopped re-arming, and the page never reloaded after the run.
+    """
     run_id = datetime.now(UTC).strftime("workbench_%Y%m%dT%H%M%SZ")
+    with RUN_LOCK:
+        if RUN_STATUS["running"]:
+            return ""
+        RUN_STATUS.update(
+            running=True,
+            state="starting",
+            startedAt=datetime.now(UTC).isoformat(timespec="seconds"),
+            finishedAt="",
+            runId=run_id,
+            returnCode=None,
+            command=[],
+            autoRefreshReasons=[],
+            log=["Preparing run..."],
+            error="",
+        )
+    return run_id
+
+
+def run_pipeline_background(options: dict, run_id: str = "") -> None:
+    run_id = run_id or datetime.now(UTC).strftime("workbench_%Y%m%dT%H%M%SZ")
     command = [sys.executable, "run_pipeline.py", "--run-id", run_id]
     try:
         sync_result = sync_config_end_date()
@@ -334,13 +367,14 @@ class WorkbenchHandler(SimpleHTTPRequestHandler):
                 self.send_json(add_approved_tickers(rows))
                 return
             if path == "/api/run":
-                with RUN_LOCK:
-                    if RUN_STATUS["running"]:
-                        self.send_json({"error": "A pipeline run is already in progress", "run": snapshot_run_status()}, HTTPStatus.CONFLICT)
-                        return
-                thread = threading.Thread(target=run_pipeline_background, args=(body,), daemon=True)
+                run_id = claim_run_slot()
+                if not run_id:
+                    self.send_json({"error": "A pipeline run is already in progress", "run": snapshot_run_status()}, HTTPStatus.CONFLICT)
+                    return
+                thread = threading.Thread(
+                    target=run_pipeline_background, args=(body, run_id), daemon=True
+                )
                 thread.start()
-                time.sleep(0.05)
                 self.send_json(snapshot_run_status(), HTTPStatus.ACCEPTED)
                 return
             if path == "/api/portfolio-review/run":
